@@ -28,5 +28,6 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 # We only need to set permissions for storage now.
 RUN chown -R root:root /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 80
-CMD sh -c "php-fpm & nginx -g 'daemon off;'"
+EXPOSE 8000
+
+CMD php artisan serve --host=0.0.0.0 --port=8000

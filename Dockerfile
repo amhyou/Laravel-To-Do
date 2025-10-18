@@ -24,11 +24,9 @@ RUN apk add --no-cache nginx \
 COPY --from=builder /app .
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-# Assign ownership of Laravel's writable directories to root.
-# Nginx (running as root) already has permission to create its own files.
-RUN chown -R root:root /var/www/html/storage /var/www/html/bootstrap/cache \
-    && touch /var/www/html/database/database.sqlite \
-    && chown root:root /var/www/html/database/database.sqlite
+# --- MODIFIED PERMISSIONS ---
+# We only need to set permissions for storage now.
+RUN chown -R root:root /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 CMD sh -c "php-fpm & nginx -g 'daemon off;'"

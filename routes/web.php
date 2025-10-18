@@ -17,7 +17,18 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $projects = auth()->user()->projects()->with('tasks')->latest()->get();
+    
+    $stats = [
+        'total_projects' => $projects->count(),
+        'total_tasks' => $projects->sum(fn($p) => $p->tasks->count()),
+        'completed_tasks' => $projects->sum(fn($p) => $p->tasks->where('is_completed', true)->count()),
+    ];
+    
+    return Inertia::render('Dashboard', [
+        'projects' => $projects->take(5), // Show only 5 recent projects
+        'stats' => $stats
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -25,8 +36,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Project routes
     Route::resource('projects', ProjectController::class);
-    Route::resource('projects.tasks', TaskController::class)->shallow();
+
+    // Task routes (nested under projects for store, but shallow for update/delete)
+    Route::post('projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::patch('tasks/{task}/toggle', [TaskController::class, 'toggleComplete'])->name('tasks.toggle');
+    Route::delete('tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 });
 
 require __DIR__.'/auth.php';

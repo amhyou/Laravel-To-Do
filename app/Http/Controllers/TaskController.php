@@ -2,63 +2,80 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use AuthorizesRequests;
+
+    // Store a new task in a project
+    public function store(Request $request, Project $project)
     {
-        //
+        // Make sure user owns the project
+        if ($project->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'due_date' => 'nullable|date'
+        ]);
+
+        $project->tasks()->create($validated);
+
+        return redirect()->back()
+            ->with('success', 'Task created successfully!');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Update a task
+    public function update(Request $request, Task $task)
     {
-        //
+        // Make sure user owns the project that contains this task
+        if ($task->project->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'due_date' => 'nullable|date',
+            'is_completed' => 'boolean'
+        ]);
+
+        $task->update($validated);
+
+        return redirect()->back()
+            ->with('success', 'Task updated successfully!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Toggle task completion status
+    public function toggleComplete(Task $task)
     {
-        //
+        if ($task->project->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $task->update([
+            'is_completed' => !$task->is_completed
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Delete a task
+    public function destroy(Task $task)
     {
-        //
-    }
+        if ($task->project->user_id !== auth()->id()) {
+            abort(403);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $task->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->back()
+            ->with('success', 'Task deleted successfully!');
     }
 }

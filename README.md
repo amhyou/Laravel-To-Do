@@ -1,61 +1,254 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Todo App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern todo application built with Laravel 12, Vue 3, Inertia.js, and Tailwind CSS. Users can register, create projects, and manage tasks within each project.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 🔐 User Authentication (Register/Login)
+- 📁 Project Management (Create, Edit, Delete)
+- ✅ Task Management (Create, Edit, Delete, Complete)
+- 📅 Due Dates for Tasks
+- 🎨 Modern UI with Tailwind CSS
+- ⚡ SPA-like Experience with Inertia.js
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2 or higher
+- Composer
+- Node.js 20.19+ or 22.12+ (for Vite 7)
+- SQLite extension enabled in PHP
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clone the Repository
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone <your-repo-url>
+cd todo-app
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Install PHP Dependencies
 
-## Laravel Sponsors
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Install JavaScript Dependencies
 
-### Premium Partners
+```bash
+npm install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+If you encounter dependency issues, try:
+```bash
+npm install --legacy-peer-deps
+```
 
-## Contributing
+### 4. Configure Environment
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+Generate application key:
+```bash
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Configure Database
 
-## Security Vulnerabilities
+The app uses SQLite by default. Make sure your `.env` file has:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+DB_CONNECTION=sqlite
+```
+
+Create the database file:
+
+**Windows PowerShell:**
+```bash
+New-Item database/database.sqlite
+```
+
+**Mac/Linux:**
+```bash
+touch database/database.sqlite
+```
+
+### 6. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+### 7. Enable PHP Extensions
+
+Make sure these extensions are enabled in your `php.ini`:
+
+```ini
+extension=fileinfo
+extension=pdo_sqlite
+extension=sqlite3
+```
+
+Find your `php.ini` location:
+```bash
+php --ini
+```
+
+## Running the Application
+
+You need **two terminal windows** running simultaneously:
+
+### Terminal 1: Start Vite Dev Server (for assets)
+
+```bash
+npm run dev
+```
+
+Keep this running!
+
+### Terminal 2: Start Laravel Server
+
+```bash
+php artisan serve
+```
+
+### Access the Application
+
+Open your browser and visit: **http://localhost:8000**
+
+## Usage
+
+1. **Register** a new account or **Login**
+2. Click **"Dashboard"** to view your projects
+3. **Create a Project** by clicking "+ New Project"
+4. **View a Project** and **Add Tasks** to it
+5. **Mark tasks as complete** by clicking the checkbox
+6. **Edit or Delete** projects and tasks as needed
+
+## Project Structure
+
+```
+app/
+├── Http/Controllers/
+│   ├── ProjectController.php    # Handles project CRUD
+│   └── TaskController.php        # Handles task CRUD
+├── Models/
+│   ├── User.php                  # User model with projects relationship
+│   ├── Project.php               # Project model with tasks relationship
+│   └── Task.php                  # Task model
+└── Policies/
+    └── ProjectPolicy.php         # Authorization for projects
+
+resources/js/Pages/
+├── Projects/
+│   ├── Index.vue                 # List all projects
+│   ├── Create.vue                # Create project form
+│   ├── Edit.vue                  # Edit project form
+│   └── Show.vue                  # View project with tasks
+└── Dashboard.vue                 # Dashboard (redirects to projects)
+
+routes/
+└── web.php                       # Application routes
+```
+
+## Database Schema
+
+### Users Table
+- id
+- name
+- email
+- password
+- timestamps
+
+### Projects Table
+- id
+- user_id (foreign key)
+- name
+- description (nullable)
+- timestamps
+
+### Tasks Table
+- id
+- project_id (foreign key, cascade delete)
+- title
+- description (nullable)
+- is_completed (boolean, default: false)
+- due_date (date, nullable)
+- timestamps
+
+## Technologies Used
+
+- **Backend:** Laravel 12
+- **Frontend:** Vue 3 (Composition API)
+- **Routing:** Inertia.js
+- **Styling:** Tailwind CSS
+- **Build Tool:** Vite
+- **Database:** SQLite
+- **Authentication:** Laravel Breeze
+
+## Troubleshooting
+
+### "could not find driver" Error
+Enable SQLite extensions in your `php.ini`:
+```ini
+extension=pdo_sqlite
+extension=sqlite3
+```
+
+### Node.js Version Error
+Upgrade to Node.js 20.19+ or 22.12+:
+- Download from: https://nodejs.org/
+
+### npm Dependency Conflicts
+Run with legacy peer deps:
+```bash
+npm install --legacy-peer-deps
+```
+
+### Assets Not Loading
+Make sure both `npm run dev` and `php artisan serve` are running simultaneously.
+
+## Building for Production
+
+### Compile Assets
+
+```bash
+npm run build
+```
+
+### Optimize Laravel
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### Deploy
+
+For production, use MySQL/PostgreSQL instead of SQLite. Update your `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+Then run migrations on the production server:
+```bash
+php artisan migrate --force
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the MIT license.
+
+## Support
+
+For issues or questions, please open an issue on GitHub.

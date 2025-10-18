@@ -1,0 +1,27 @@
+# Git
+.git
+.gitignore
+
+# Local Environment
+.env
+.env.example
+
+# Local Dependencies
+/vendor/
+/node_modules/
+
+# Laravel Storage Files
+/storage/app/
+/storage/framework/
+/storage/logs/
+/public/storage
+
+# IDE and OS files
+.idea/
+.vscode/
+*.DS_Store
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml

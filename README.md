@@ -1,254 +1,100 @@
-# Laravel Todo App
+# 📝 Laravel & Vue Todo Application
 
-A modern todo application built with Laravel 12, Vue 3, Inertia.js, and Tailwind CSS. Users can register, create projects, and manage tasks within each project.
+A modern, full-stack **To-Do** application built to showcase a clean architecture using **Laravel** for the backend and **Vue.js with Inertia.js** for a seamless, single-page application experience.
 
-## Features
+---
 
-- 🔐 User Authentication (Register/Login)
-- 📁 Project Management (Create, Edit, Delete)
-- ✅ Task Management (Create, Edit, Delete, Complete)
-- 📅 Due Dates for Tasks
-- 🎨 Modern UI with Tailwind CSS
-- ⚡ SPA-like Experience with Inertia.js
+## 🌐 Live Demo
+👉 [View Deployed App](https://todoapp.amhyou.com)
 
-## Requirements
+---
 
-- PHP 8.2 or higher
+## ✨ Features
+
+- 🔐 **User Authentication:** Secure registration and login system.  
+- 📁 **Project Management:** Create, update, and delete your own projects.  
+- ✅ **Task Management:** Full CRUD functionality for tasks within each project, including completion status and due dates.  
+- ⚡ **Modern SPA Experience:** Fast, responsive interface powered by **Vue 3** and **Inertia.js** — no page reloads.
+
+---
+
+## 🛠️ Technologies Used
+
+| Layer | Technology |
+|-------|-------------|
+| **Backend** | Laravel 12 |
+| **Frontend** | Vue 3 (Composition API) |
+| **Hybrid Framework** | Inertia.js |
+| **Database** | SQLite (included in the repository) |
+| **Styling** | Tailwind CSS |
+| **Authentication** | Laravel Breeze |
+
+---
+
+## 🚀 Getting Started
+
+This project is pre-configured to use the included **SQLite database** — no setup or migrations needed.
+
+### ✅ Prerequisites
+
+Make sure you have the following installed:
+
+- PHP 8.2+
 - Composer
-- Node.js 20.19+ or 22.12+ (for Vite 7)
-- SQLite extension enabled in PHP
+- Node.js 20+
 
-## Installation
+---
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd todo-app
+git clone https://github.com/amhyou/Laravel-To-Do.git
+cd Laravel-To-Do
 ```
 
-### 2. Install PHP Dependencies
+---
+
+### 2. Install Dependencies
 
 ```bash
 composer install
-```
-
-### 3. Install JavaScript Dependencies
-
-```bash
 npm install
 ```
 
-If you encounter dependency issues, try:
-```bash
-npm install --legacy-peer-deps
-```
+---
 
-### 4. Configure Environment
+### 3. Configure the Environment
 
-Copy the example environment file:
 ```bash
+# Copy the environment file
 cp .env.example .env
-```
 
-Generate application key:
-```bash
+# Generate the application key
 php artisan key:generate
 ```
 
-### 5. Configure Database
+---
 
-The app uses SQLite by default. Make sure your `.env` file has:
+### 4. Run the Application
 
-```env
-DB_CONNECTION=sqlite
-```
+You’ll need **two terminals** running simultaneously:
 
-Create the database file:
-
-**Windows PowerShell:**
-```bash
-New-Item database/database.sqlite
-```
-
-**Mac/Linux:**
-```bash
-touch database/database.sqlite
-```
-
-### 6. Run Migrations
-
-```bash
-php artisan migrate
-```
-
-### 7. Enable PHP Extensions
-
-Make sure these extensions are enabled in your `php.ini`:
-
-```ini
-extension=fileinfo
-extension=pdo_sqlite
-extension=sqlite3
-```
-
-Find your `php.ini` location:
-```bash
-php --ini
-```
-
-## Running the Application
-
-You need **two terminal windows** running simultaneously:
-
-### Terminal 1: Start Vite Dev Server (for assets)
-
+#### Terminal 1 – Start Vite (Frontend)
 ```bash
 npm run dev
 ```
 
-Keep this running!
-
-### Terminal 2: Start Laravel Server
-
+#### Terminal 2 – Start Laravel (Backend)
 ```bash
 php artisan serve
 ```
 
-### Access the Application
+---
 
-Open your browser and visit: **http://localhost:8000**
+## 🌍 Access the App
 
-## Usage
+Once both servers are running, open your browser and visit:
 
-1. **Register** a new account or **Login**
-2. Click **"Dashboard"** to view your projects
-3. **Create a Project** by clicking "+ New Project"
-4. **View a Project** and **Add Tasks** to it
-5. **Mark tasks as complete** by clicking the checkbox
-6. **Edit or Delete** projects and tasks as needed
+👉 **http://localhost:8000**
 
-## Project Structure
-
-```
-app/
-├── Http/Controllers/
-│   ├── ProjectController.php    # Handles project CRUD
-│   └── TaskController.php        # Handles task CRUD
-├── Models/
-│   ├── User.php                  # User model with projects relationship
-│   ├── Project.php               # Project model with tasks relationship
-│   └── Task.php                  # Task model
-└── Policies/
-    └── ProjectPolicy.php         # Authorization for projects
-
-resources/js/Pages/
-├── Projects/
-│   ├── Index.vue                 # List all projects
-│   ├── Create.vue                # Create project form
-│   ├── Edit.vue                  # Edit project form
-│   └── Show.vue                  # View project with tasks
-└── Dashboard.vue                 # Dashboard (redirects to projects)
-
-routes/
-└── web.php                       # Application routes
-```
-
-## Database Schema
-
-### Users Table
-- id
-- name
-- email
-- password
-- timestamps
-
-### Projects Table
-- id
-- user_id (foreign key)
-- name
-- description (nullable)
-- timestamps
-
-### Tasks Table
-- id
-- project_id (foreign key, cascade delete)
-- title
-- description (nullable)
-- is_completed (boolean, default: false)
-- due_date (date, nullable)
-- timestamps
-
-## Technologies Used
-
-- **Backend:** Laravel 12
-- **Frontend:** Vue 3 (Composition API)
-- **Routing:** Inertia.js
-- **Styling:** Tailwind CSS
-- **Build Tool:** Vite
-- **Database:** SQLite
-- **Authentication:** Laravel Breeze
-
-## Troubleshooting
-
-### "could not find driver" Error
-Enable SQLite extensions in your `php.ini`:
-```ini
-extension=pdo_sqlite
-extension=sqlite3
-```
-
-### Node.js Version Error
-Upgrade to Node.js 20.19+ or 22.12+:
-- Download from: https://nodejs.org/
-
-### npm Dependency Conflicts
-Run with legacy peer deps:
-```bash
-npm install --legacy-peer-deps
-```
-
-### Assets Not Loading
-Make sure both `npm run dev` and `php artisan serve` are running simultaneously.
-
-## Building for Production
-
-### Compile Assets
-
-```bash
-npm run build
-```
-
-### Optimize Laravel
-
-```bash
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-```
-
-### Deploy
-
-For production, use MySQL/PostgreSQL instead of SQLite. Update your `.env`:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-```
-
-Then run migrations on the production server:
-```bash
-php artisan migrate --force
-```
-
-## License
-
-This project is open-sourced software licensed under the MIT license.
-
-## Support
-
-For issues or questions, please open an issue on GitHub.
+You can now **register a new user**, create **projects**, and manage **tasks** right away!

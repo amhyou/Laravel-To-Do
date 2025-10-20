@@ -24,9 +24,13 @@ RUN apk add --no-cache nginx \
 COPY --from=builder /app .
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-# --- MODIFIED PERMISSIONS ---
-# We only need to set permissions for storage now.
-RUN chown -R root:root /var/www/html/storage /var/www/html/bootstrap/cache
+# create files and permissions
+RUN mkdir -p /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/framework/cache \
+    /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 8000
 

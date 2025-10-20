@@ -35,7 +35,33 @@ A modern, full-stack **To-Do** application built to showcase a clean architectur
 
 This project is pre-configured to use the included **SQLite database** — no setup or migrations needed.
 
-### ✅ Prerequisites
+You can run the app in **two ways**:
+
+1. 🐳 **Using Docker (Recommended — simplest way)**
+2. 💻 **Running Locally with PHP & Node**
+
+---
+
+### 🐳 1. Run with Docker (Recommended)
+
+If you prefer not to install PHP, Composer, or Node.js, you can quickly start the app using the prebuilt Docker image:
+
+```bash
+docker run -d -p 8000:8000 amhyou/laravel-todo:latest
+```
+
+Once the container is running, open your browser and visit:
+
+👉 **http://localhost:8000**
+
+That’s it — the application will be running instantly inside Docker!  
+No local environment setup required.
+
+---
+
+### 💻 2. Run Locally
+
+#### ✅ Prerequisites
 
 Make sure you have the following installed:
 
@@ -45,7 +71,7 @@ Make sure you have the following installed:
 
 ---
 
-### 1. Clone the Repository
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/amhyou/Laravel-To-Do.git
@@ -54,7 +80,7 @@ cd Laravel-To-Do
 
 ---
 
-### 2. Install Dependencies
+#### 2. Install Dependencies
 
 ```bash
 composer install
@@ -63,7 +89,7 @@ npm install
 
 ---
 
-### 3. Configure the Environment
+#### 3. Configure the Environment
 
 ```bash
 # Copy the environment file
@@ -75,26 +101,28 @@ php artisan key:generate
 
 ---
 
-### 4. Run the Application
+#### 4. Run the Application
 
 You’ll need **two terminals** running simultaneously:
 
-#### Terminal 1 – Start Vite (Frontend)
+##### Terminal 1 – Start Vite (Frontend)
 ```bash
 npm run dev
 ```
 
-#### Terminal 2 – Start Laravel (Backend)
+##### Terminal 2 – Start Laravel (Backend)
 ```bash
 php artisan serve
 ```
 
 ---
 
-## 🌍 Access the App
+### 🌍 Access the App
 
-Once both servers are running, open your browser and visit:
+Once both servers (or the Docker container) are running, open your browser and visit:
 
 👉 **http://localhost:8000**
 
 You can now **register a new user**, create **projects**, and manage **tasks** right away!
+
+---
